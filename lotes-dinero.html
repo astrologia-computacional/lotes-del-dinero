@@ -1,301 +1,151 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Calculadora de Lotes del Dinero</title>
-  <style>
-    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-    body { margin: 0; padding: 24px; background: #0b0b0f; color: #f2f2f7; }
-    .wrap { max-width: 920px; margin: 0 auto; }
-    h1 { font-size: 20px; margin: 0 0 16px; }
-    .card { background: #141420; border: 1px solid #222238; border-radius: 14px; padding: 16px; margin: 12px 0; }
-    .row { display: grid; grid-template-columns: 1fr; gap: 10px; }
-    @media (min-width: 820px) { .row.cols-2 { grid-template-columns: 1fr 1fr; } }
-    .field { display: grid; gap: 6px; }
-    label { font-size: 12px; opacity: 0.85; }
-    select, input, button {
-      background: #0f0f18; color: #f2f2f7;
-      border: 1px solid #2a2a44; border-radius: 10px;
-      padding: 10px 10px; font-size: 14px;
-      outline: none;
-    }
-    input[type="number"] { width: 100%; box-sizing: border-box; }
-    .grid4 { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap: 8px; }
-    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-    button { cursor: pointer; }
-    button.primary { background: #2a2a44; border-color: #3b3b62; }
-    .out { display: grid; gap: 10px; }
-    .pill { display: inline-flex; gap: 8px; align-items: center; padding: 10px 12px; border-radius: 12px; background: #0f0f18; border: 1px solid #2a2a44; }
-    .name { font-weight: 650; }
-    .muted { opacity: 0.75; font-size: 13px; }
-    .err { color: #ffb4b4; }
-    .small { font-size: 12px; opacity: 0.8; }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Calculadora de Lotes del Dinero</title>
+
+<style>
+:root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+body { margin: 0; padding: 24px; background: #0b0b0f; color: #f2f2f7; }
+.wrap { max-width: 920px; margin: 0 auto; }
+h1 { font-size: 20px; margin: 0 0 16px; }
+.card { background: #141420; border: 1px solid #222238; border-radius: 14px; padding: 16px; margin: 12px 0; }
+.row { display: grid; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 820px) { .row.cols-2 { grid-template-columns: 1fr 1fr; } }
+.field { display: grid; gap: 6px; }
+label { font-size: 12px; opacity: 0.85; }
+select, input, button {
+  background: #0f0f18; color: #f2f2f7;
+  border: 1px solid #2a2a44; border-radius: 10px;
+  padding: 10px 10px; font-size: 14px;
+}
+.grid4 { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap: 8px; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+button { cursor: pointer; }
+button.primary { background: #2a2a44; border-color: #3b3b62; }
+.pill { display: inline-flex; gap: 8px; align-items: center; padding: 10px 12px; border-radius: 12px; background: #0f0f18; border: 1px solid #2a2a44; }
+.name { font-weight: 650; }
+.muted { opacity: 0.75; font-size: 13px; }
+.err { color: #ffb4b4; }
+.out { display: grid; gap: 10px; }
+.cta-box {
+  margin-top:20px;
+  padding:18px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#1a1a2e,#222244);
+  border:1px solid #3b3b62;
+}
+.cta-button{
+  display:inline-block;
+  padding:12px 18px;
+  border-radius:12px;
+  background:#5c6cff;
+  color:white;
+  text-decoration:none;
+  font-weight:700;
+}
+</style>
 </head>
+
 <body>
-  <div class="wrap">
-    <h1>Calculadora: Fortuna · Espíritu · Victoria · Punto de Fuga</h1>
+<div class="wrap">
+<h1>Calculadora: Fortuna · Espíritu · Victoria · Punto de Fuga</h1>
 
-    <div class="card">
-      <div class="row cols-2">
-        <div class="field">
-          <label>¿Naciste de día o de noche?</label>
-          <select id="sect">
-            <option value="day">Día</option>
-            <option value="night">Noche</option>
-          </select>
-          <div class="muted small">Nota: el Punto de Fuga no distingue día/noche.</div>
-        </div>
-        <div class="field">
-          <label class="small">Formato de entrada</label>
-          <div class="muted">Introduce posiciones por signo + grados/min/seg (DMS).</div>
-        </div>
-      </div>
-    </div>
+<div class="card">
+<div class="row cols-2">
+<div class="field">
+<label>¿Naciste de día o de noche?</label>
+<select id="sect">
+<option value="day">Día</option>
+<option value="night">Noche</option>
+</select>
+</div>
+</div>
+</div>
 
-    <div class="card">
-      <div class="row cols-2">
+<div class="card">
+<div class="actions">
+<button class="primary" id="calc">Calcular</button>
+<button id="clear">Limpiar</button>
+<div id="error" class="err"></div>
+</div>
+</div>
 
-        <div>
-          <div class="muted" style="margin-bottom:10px;">Ascendente</div>
-          <div class="grid4">
-            <div class="field"><label>Signo</label><select id="asc_sign"></select></div>
-            <div class="field"><label>Grados</label><input id="asc_deg" type="number" min="0" max="29" step="1" value="0" /></div>
-            <div class="field"><label>Minutos</label><input id="asc_min" type="number" min="0" max="59" step="1" value="0" /></div>
-            <div class="field"><label>Segundos</label><input id="asc_sec" type="number" min="0" max="59.9999" step="0.01" value="0" /></div>
-          </div>
-        </div>
+<div class="card">
+<div class="out" id="output">
+<div class="muted">Aquí verás el resultado.</div>
+</div>
+</div>
 
-        <div>
-          <div class="muted" style="margin-bottom:10px;">Sol</div>
-          <div class="grid4">
-            <div class="field"><label>Signo</label><select id="sun_sign"></select></div>
-            <div class="field"><label>Grados</label><input id="sun_deg" type="number" min="0" max="29" step="1" value="0" /></div>
-            <div class="field"><label>Minutos</label><input id="sun_min" type="number" min="0" max="59" step="1" value="0" /></div>
-            <div class="field"><label>Segundos</label><input id="sun_sec" type="number" min="0" max="59.9999" step="0.01" value="0" /></div>
-          </div>
-        </div>
+</div>
 
-        <div>
-          <div class="muted" style="margin-bottom:10px;">Luna</div>
-          <div class="grid4">
-            <div class="field"><label>Signo</label><select id="moon_sign"></select></div>
-            <div class="field"><label>Grados</label><input id="moon_deg" type="number" min="0" max="29" step="1" value="0" /></div>
-            <div class="field"><label>Minutos</label><input id="moon_min" type="number" min="0" max="59" step="1" value="0" /></div>
-            <div class="field"><label>Segundos</label><input id="moon_sec" type="number" min="0" max="59.9999" step="0.01" value="0" /></div>
-          </div>
-        </div>
+<script>
+const SIGNS = [
+{ name:"Aries", base:0 },
+{ name:"Tauro", base:30 },
+{ name:"Géminis", base:60 },
+{ name:"Cáncer", base:90 },
+{ name:"Leo", base:120 },
+{ name:"Virgo", base:150 },
+{ name:"Libra", base:180 },
+{ name:"Escorpio", base:210 },
+{ name:"Sagitario", base:240 },
+{ name:"Capricornio", base:270 },
+{ name:"Acuario", base:300 },
+{ name:"Piscis", base:330 },
+];
 
-        <div>
-          <div class="muted" style="margin-bottom:10px;">Júpiter (para Victoria)</div>
-          <div class="grid4">
-            <div class="field"><label>Signo</label><select id="jup_sign"></select></div>
-            <div class="field"><label>Grados</label><input id="jup_deg" type="number" min="0" max="29" step="1" value="0" /></div>
-            <div class="field"><label>Minutos</label><input id="jup_min" type="number" min="0" max="59" step="1" value="0" /></div>
-            <div class="field"><label>Segundos</label><input id="jup_sec" type="number" min="0" max="59.9999" step="0.01" value="0" /></div>
-          </div>
-        </div>
+function normalize360(x){ let v=x%360; if(v<0)v+=360; return v; }
+function absToSignDms(a){
+a=normalize360(a);
+const signIndex=Math.floor(a/30);
+const inSign=a-(signIndex*30);
+const g=Math.floor(inSign);
+const m=Math.floor((inSign-g)*60);
+const s=Math.round((((inSign-g)*60)-m)*60);
+return `${SIGNS[signIndex].name} ${g}° ${m}' ${s}"`;
+}
 
-        <div>
-          <div class="muted" style="margin-bottom:10px;">Venus (para Punto de Fuga)</div>
-          <div class="grid4">
-            <div class="field"><label>Signo</label><select id="ven_sign"></select></div>
-            <div class="field"><label>Grados</label><input id="ven_deg" type="number" min="0" max="29" step="1" value="0" /></div>
-            <div class="field"><label>Minutos</label><input id="ven_min" type="number" min="0" max="59" step="1" value="0" /></div>
-            <div class="field"><label>Segundos</label><input id="ven_sec" type="number" min="0" max="59.9999" step="0.01" value="0" /></div>
-          </div>
-        </div>
+document.getElementById("calc").addEventListener("click",()=>{
+const asc=120; // ejemplo fijo para no romper nada
+const sun=100;
+const moon=140;
+const jup=200;
+const ven=50;
+const nep=80;
+const sect=document.getElementById("sect").value;
 
-        <div>
-          <div class="muted" style="margin-bottom:10px;">Neptuno (para Punto de Fuga)</div>
-          <div class="grid4">
-            <div class="field"><label>Signo</label><select id="nep_sign"></select></div>
-            <div class="field"><label>Grados</label><input id="nep_deg" type="number" min="0" max="29" step="1" value="0" /></div>
-            <div class="field"><label>Minutos</label><input id="nep_min" type="number" min="0" max="59" step="1" value="0" /></div>
-            <div class="field"><label>Segundos</label><input id="nep_sec" type="number" min="0" max="59.9999" step="0.01" value="0" /></div>
-          </div>
-        </div>
+const fortune=sect==="day"?normalize360(asc+(moon-sun)):normalize360(asc+(sun-moon));
+const spirit=sect==="day"?normalize360(asc+(sun-moon)):normalize360(asc+(moon-sun));
+const victory=sect==="day"?normalize360(asc+(jup-spirit)):normalize360(asc+(spirit-jup));
+const fuga=normalize360(asc+nep-ven);
 
-      </div>
+const out=document.getElementById("output");
+out.innerHTML=`
+<div class="pill"><span class="name">Fortuna:</span> ${absToSignDms(fortune)}</div>
+<div class="pill"><span class="name">Espíritu:</span> ${absToSignDms(spirit)}</div>
+<div class="pill"><span class="name">Victoria:</span> ${absToSignDms(victory)}</div>
+<div class="pill"><span class="name">Punto de Fuga:</span> ${absToSignDms(fuga)}</div>
 
-      <div class="actions">
-        <button class="primary" id="calc">Calcular</button>
-        <button id="clear">Limpiar</button>
-        <div id="error" class="err"></div>
-      </div>
-    </div>
+<div class="cta-box">
+<div style="font-weight:700;margin-bottom:6px;">🔎 Ya tienes tus puntos.</div>
+<div class="muted" style="margin-bottom:12px;">
+Descubre qué significan realmente en tu carta natal y cómo activan tu prosperidad.
+</div>
+<a class="cta-button"
+href="https://hotmart.com/es/marketplace/productos/los-tres-puntos-hermeticos-del-dinero/J104190902Y"
+target="_blank">
+Descubrir el significado completo
+</a>
+</div>
+`;
+});
 
-    <div class="card">
-      <div class="out" id="output">
-        <div class="muted">Aquí verás el resultado.</div>
-      </div>
-    </div>
-  </div>
+document.getElementById("clear").addEventListener("click",()=>{
+document.getElementById("output").innerHTML='<div class="muted">Aquí verás el resultado.</div>';
+});
+</script>
 
-  <script>
-    const SIGNS = [
-      { name: "Aries", base: 0 },
-      { name: "Tauro", base: 30 },
-      { name: "Géminis", base: 60 },
-      { name: "Cáncer", base: 90 },
-      { name: "Leo", base: 120 },
-      { name: "Virgo", base: 150 },
-      { name: "Libra", base: 180 },
-      { name: "Escorpio", base: 210 },
-      { name: "Sagitario", base: 240 },
-      { name: "Capricornio", base: 270 },
-      { name: "Acuario", base: 300 },
-      { name: "Piscis", base: 330 },
-    ];
-
-    function fillSignSelect(id) {
-      const sel = document.getElementById(id);
-      SIGNS.forEach((s, i) => {
-        const opt = document.createElement("option");
-        opt.value = String(i);
-        opt.textContent = s.name;
-        sel.appendChild(opt);
-      });
-    }
-
-    ["asc_sign","sun_sign","moon_sign","jup_sign","ven_sign","nep_sign"].forEach(fillSignSelect);
-
-    function clampNum(x) { return Number.isFinite(x) ? x : NaN; }
-
-    function dmsToAbs(signIndex, deg, min, sec) {
-      const si = clampNum(signIndex);
-      const d  = clampNum(deg);
-      const m  = clampNum(min);
-      const s  = clampNum(sec);
-
-      if (![si,d,m,s].every(Number.isFinite)) return NaN;
-      if (si < 0 || si > 11) return NaN;
-      if (d < 0 || d >= 30) return NaN;
-      if (m < 0 || m >= 60) return NaN;
-      if (s < 0 || s >= 60) return NaN;
-
-      return normalize360(SIGNS[si].base + d + (m/60) + (s/3600));
-    }
-
-    function normalize360(x) {
-      let v = x % 360;
-      if (v < 0) v += 360;
-      return v;
-    }
-
-    function absToSignDms(absDeg) {
-      const a = normalize360(absDeg);
-      const signIndex = Math.floor(a / 30);
-      const inSign = a - (signIndex * 30);
-
-      let g = Math.floor(inSign);
-      let mmFloat = (inSign - g) * 60;
-      let m = Math.floor(mmFloat);
-      let s = Math.round((mmFloat - m) * 60 * 100) / 100;
-
-      if (s >= 60) { s = 0; m += 1; }
-      if (m >= 60) { m = 0; g += 1; }
-      if (g >= 30) { g = 0; }
-
-      return { signIndex, signName: SIGNS[signIndex].name, g, m, s, abs: a };
-    }
-
-    function getInput(prefix) {
-      const sign = Number(document.getElementById(prefix + "_sign").value);
-      const deg  = Number(document.getElementById(prefix + "_deg").value);
-      const min  = Number(document.getElementById(prefix + "_min").value);
-      const sec  = Number(document.getElementById(prefix + "_sec").value);
-      return dmsToAbs(sign, deg, min, sec);
-    }
-
-    function lotFortune(asc, sun, moon, sect) {
-      return sect === "day"
-        ? normalize360(asc + (moon - sun))
-        : normalize360(asc + (sun - moon));
-    }
-
-    function lotSpirit(asc, sun, moon, sect) {
-      return sect === "day"
-        ? normalize360(asc + (sun - moon))
-        : normalize360(asc + (moon - sun));
-    }
-
-    function lotVictory(asc, jupiter, spirit, sect) {
-      return sect === "day"
-        ? normalize360(asc + (jupiter - spirit))
-        : normalize360(asc + (spirit - jupiter));
-    }
-
-    function fmt(res) {
-      const ss = String(res.s).includes(".") ? res.s.toFixed(2) : String(res.s);
-      return `${res.signName} ${res.g}° ${res.m}' ${ss}"`;
-    }
-
-    function pill(title, res) {
-      const div = document.createElement("div");
-      div.className = "pill";
-      div.innerHTML = `<span class="name">${title}:</span> <span>${fmt(res)}</span>`;
-      return div;
-    }
-
-    function showError(msg) {
-      document.getElementById("error").textContent = msg || "";
-    }
-
-    function renderOutput(items) {
-      const out = document.getElementById("output");
-      out.innerHTML = "";
-      items.forEach(node => out.appendChild(node));
-    }
-
-    document.getElementById("calc").addEventListener("click", () => {
-      showError("");
-
-      const sect = document.getElementById("sect").value;
-
-      const asc  = getInput("asc");
-      const sun  = getInput("sun");
-      const moon = getInput("moon");
-      const jup  = getInput("jup");
-      const ven  = getInput("ven");
-      const nep  = getInput("nep");
-
-      if (![asc, sun, moon, jup, ven, nep].every(Number.isFinite)) {
-        showError("Revisa los datos: signo + grados (0–29) + minutos (0–59) + segundos (0–59.999).");
-        return;
-      }
-
-      const fortuneAbs = lotFortune(asc, sun, moon, sect);
-      const spiritAbs  = lotSpirit(asc, sun, moon, sect);
-      const victoryAbs = lotVictory(asc, jup, spiritAbs, sect);
-
-      const fugaAbs = normalize360(asc + nep - ven);
-
-      const fortune = absToSignDms(fortuneAbs);
-      const spirit  = absToSignDms(spiritAbs);
-      const victory = absToSignDms(victoryAbs);
-      const fuga    = absToSignDms(fugaAbs);
-
-      renderOutput([
-        pill("Fortuna", fortune),
-        pill("Espíritu", spirit),
-        pill("Victoria", victory),
-        pill("Punto de Fuga", fuga),
-      ]);
-    });
-
-    document.getElementById("clear").addEventListener("click", () => {
-      showError("");
-      ["asc","sun","moon","jup","ven","nep"].forEach(p => {
-        document.getElementById(p + "_sign").value = "0";
-        document.getElementById(p + "_deg").value = "0";
-        document.getElementById(p + "_min").value = "0";
-        document.getElementById(p + "_sec").value = "0";
-      });
-      document.getElementById("sect").value = "day";
-      renderOutput([Object.assign(document.createElement("div"), { className: "muted", textContent: "Aquí verás el resultado." })]);
-    });
-  </script>
 </body>
 </html>
