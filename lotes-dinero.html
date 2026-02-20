@@ -277,12 +277,51 @@
       const victory = absToSignDms(victoryAbs);
       const fuga    = absToSignDms(fugaAbs);
 
-      renderOutput([
-        pill("Fortuna", fortune),
-        pill("Espíritu", spirit),
-        pill("Victoria", victory),
-        pill("Punto de Fuga", fuga),
-      ]);
+     const results = [
+  pill("Fortuna", fortune),
+  pill("Espíritu", spirit),
+  pill("Victoria", victory),
+  pill("Punto de Fuga", fuga),
+];
+
+// Bloque de conversión persuasivo
+const cta = document.createElement("div");
+cta.style.marginTop = "20px";
+
+cta.innerHTML = `
+  <div style="
+      margin-top:10px;
+      padding:18px;
+      border-radius:14px;
+      background:linear-gradient(135deg,#1a1a2e,#222244);
+      border:1px solid #3b3b62;
+  ">
+    <div style="font-weight:700; font-size:16px; margin-bottom:6px;">
+      🔎 Ya tienes tus puntos.
+    </div>
+    <div style="opacity:0.85; margin-bottom:14px;">
+      Ahora descubre qué significan realmente en tu carta natal y cómo activan tu prosperidad.
+    </div>
+    <a href="https://hotmart.com/es/marketplace/productos/los-tres-puntos-hermeticos-del-dinero/J104190902Y"
+       target="_blank"
+       style="
+         display:inline-block;
+         padding:12px 18px;
+         border-radius:12px;
+         background:#5c6cff;
+         color:white;
+         text-decoration:none;
+         font-weight:700;
+         letter-spacing:0.3px;
+       ">
+       Descubrir el significado completo
+    </a>
+  </div>
+`;
+
+results.push(cta);
+
+renderOutput(results);
     });
 
     document.getElementById("clear").addEventListener("click", () => {
